@@ -16,14 +16,20 @@ public class HandlerExceptionCustomizada extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<ResponseException> handleRecursoNaoEncontradoException(RecursoNaoEncontradoException ex) {
-        ResponseException responseException = new ResponseException(ex.getMessage());
+        ResponseException responseException = new ResponseException(
+                HttpStatus.NOT_FOUND.value(),
+                "Not Found",
+                ex.getMessage());
 
         return new ResponseEntity<>(responseException, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(PropriedadeJaCadastradaException.class)
     public ResponseEntity<ResponseException> handlePropriedadeJaCadastrada(PropriedadeJaCadastradaException ex) {
-        ResponseException responseException = new ResponseException(ex.getMessage());
+        ResponseException responseException = new ResponseException(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                ex.getMessage());
 
         return new ResponseEntity<>(responseException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
