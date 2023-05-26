@@ -27,11 +27,11 @@ public class HandlerExceptionCustomizada extends ResponseEntityExceptionHandler 
     @ExceptionHandler(PropriedadeJaCadastradaException.class)
     public ResponseEntity<ResponseException> handlePropriedadeJaCadastrada(PropriedadeJaCadastradaException ex) {
         ResponseException responseException = new ResponseException(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
+                HttpStatus.CONFLICT.value(),
+                "Conflict",
                 ex.getMessage());
 
-        return new ResponseEntity<>(responseException, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(responseException, HttpStatus.CONFLICT);
     }
 
 }

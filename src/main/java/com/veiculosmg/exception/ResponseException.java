@@ -6,13 +6,13 @@ public class ResponseException {
 
     private LocalDateTime timestamp;
     private int codigoErro;
-    private String erro;
+    private String tituloErro;
     private String mensagem;
 
-    public ResponseException(int codigo, String erro, String mensagem) {
+    public ResponseException(int codigo, String tituloErro, String mensagem) {
         this.timestamp = LocalDateTime.now();
         this.codigoErro = codigo;
-        this.erro = erro;
+        this.tituloErro = tituloErro;
         this.mensagem = mensagem;
     }
 
@@ -35,12 +35,12 @@ public class ResponseException {
         this.codigoErro = codigoErro;
     }
 
-    public String getErro() {
-        return erro;
+    public String getTituloErro() {
+        return tituloErro;
     }
 
-    public void setErro(String erro) {
-        this.erro = erro;
+    public void setTituloErro(String tituloErro) {
+        this.tituloErro = tituloErro;
     }
 
     public String getMensagem() {

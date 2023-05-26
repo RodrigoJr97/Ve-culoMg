@@ -21,7 +21,7 @@ public class Carro {
     private String modelo;
 
     @NotBlank(message = "Placa Obrigatório")
-    @Column(length = 6)
+    @Column(length = 6, unique = true)
     private String placa;
 
     @Column(nullable = false)

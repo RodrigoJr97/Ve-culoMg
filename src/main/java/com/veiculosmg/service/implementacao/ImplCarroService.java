@@ -52,7 +52,7 @@ public class ImplCarroService implements CarroService {
     @Override
     public Carro salvaNovaEntidade(Carro carro) {
         if (vericaSeExistePlacaCadastrada(carro)) {
-            throw new PropriedadeJaCadastradaException("Placa já cadastrada");
+            throw new PropriedadeJaCadastradaException("Placa informada já está cadastrada!");
         }
         return carroRepository.save(carro);
     }
