@@ -86,7 +86,7 @@ public class ImplCarroService implements CarroService {
         String placaDoNovoCarro = carroAtualizado.getPlaca();
 
         if (!placaDoCarro.equalsIgnoreCase(placaDoNovoCarro) && vericaSeExistePlacaCadastrada(carroAtualizado)) {
-            throw new PropriedadeJaCadastradaException("A nova placa já está cadastrada em outro veículo!");
+            throw new PropriedadeJaCadastradaException("Placa informada já está salva em outro veículo!");
         }
     }
 

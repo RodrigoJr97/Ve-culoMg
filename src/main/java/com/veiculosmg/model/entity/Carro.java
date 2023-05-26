@@ -32,17 +32,17 @@ public class Carro {
     private String categoria;
 
     @Column(nullable = false)
-    private double preco;
+    private double valorDiaria;
 
     private boolean disponivel = true;
 
-    public Carro(String marca, String modelo, String placa, int ano, String categoria, double preco) {
+    public Carro(String marca, String modelo, String placa, int ano, String categoria, double valorDiaria) {
         this.marca = marca;
         this.modelo = modelo;
         this.placa = placa;
         this.ano = ano;
         this.categoria = categoria;
-        this.preco = preco;
+        this.valorDiaria = valorDiaria;
     }
 
     public Carro() { }
@@ -95,12 +95,12 @@ public class Carro {
         this.categoria = categoria;
     }
 
-    public double getPreco() {
-        return preco;
+    public double getValorDiaria() {
+        return valorDiaria;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
+    public void setValorDiaria(double valorDiaria) {
+        this.valorDiaria = valorDiaria;
     }
 
     public boolean isDisponivel() {
@@ -133,8 +133,9 @@ public class Carro {
                 ", placa='" + placa + '\'' +
                 ", ano=" + ano +
                 ", categoria='" + categoria + '\'' +
-                ", preco=" + preco +
+                ", preco=" + valorDiaria +
                 ", disponivel=" + disponivel +
                 '}';
     }
+
 }
