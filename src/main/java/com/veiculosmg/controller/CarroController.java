@@ -1,6 +1,5 @@
 package com.veiculosmg.controller;
 
-import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.service.implementacao.ImplCarroService;
 import jakarta.validation.Valid;
@@ -61,7 +60,7 @@ public class CarroController {
     }
 
     @PostMapping
-    public ResponseEntity<Carro> saveCarro(@RequestBody @Valid Carro carro) {
+    public ResponseEntity<Carro> saveCarro(@Valid @RequestBody Carro carro) {
         Carro novoCarro = carroService.salvaNovaEntidade(carro);
         return new ResponseEntity<>(novoCarro, HttpStatus.CREATED);
     }
@@ -77,7 +76,7 @@ public class CarroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCarro(@RequestBody @Valid Carro carro, @PathVariable Long id) {
+    public ResponseEntity<?> updateCarro(@Valid @RequestBody Carro carro, @PathVariable Long id) {
         Optional<Carro> carroExiste = carroService.entidadePorId(id);
 
         return carroExiste.map(car -> {

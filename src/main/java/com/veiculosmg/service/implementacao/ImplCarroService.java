@@ -1,10 +1,11 @@
 package com.veiculosmg.service.implementacao;
 
-import com.veiculosmg.exception.PropriedadeJaCadastradaException;
+import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.repository.CarroRepository;
 import com.veiculosmg.service.CarroService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,10 +52,12 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public Carro salvaNovaEntidade(Carro carro) {
-        if (vericaSeExistePlacaCadastrada(carro)) {
-            throw new PropriedadeJaCadastradaException("Placa informada já está cadastrada!");
+        try {
+            return carroRepository.save(carro);
+        } catch (DataIntegrityViolationException ex) {
+            ex.printStackTrace();
+            throw new AtributoDuplicadoException("Placa informada já está cadastrada!");
         }
-        return carroRepository.save(carro);
     }
 
     @Override
@@ -86,7 +89,7 @@ public class ImplCarroService implements CarroService {
         String placaDoNovoCarro = carroAtualizado.getPlaca();
 
         if (!placaDoCarro.equalsIgnoreCase(placaDoNovoCarro) && vericaSeExistePlacaCadastrada(carroAtualizado)) {
-            throw new PropriedadeJaCadastradaException("Placa informada já está salva em outro veículo!");
+            throw new AtributoDuplicadoException("Placa informada já está salva em outro veículo!");
         }
     }
 
@@ -106,12 +109,11 @@ public class ImplCarroService implements CarroService {
         return placas.contains(carro.getPlaca());
     }
 
-    private final Function<String, List<Carro>> listaCategoria =
-            nomeCategoria -> {
-                List<Carro> listaCarros = listaEntidades();
-                return listaCarros.stream()
-                        .filter(carro -> carro.getCategoria().equals(nomeCategoria))
-                        .toList();
-            };
-
+    private final Function<String, List<Carro>> listaCategoria = nomeCategoria ->
+            listaEntidades()
+                    .stream()
+                    .filter(carro -> carro.getCategoria().equals(nomeCategoria))
+                    .toList();
 }
+
+

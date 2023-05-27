@@ -1,7 +1,7 @@
 package com.veiculosmg.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
@@ -12,7 +12,7 @@ public class Carro {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Marca Obrigatório")
+    @NotBlank(message = "Marca Obrigatória")
     @Column(length = 25)
     private String marca;
 
@@ -20,18 +20,19 @@ public class Carro {
     @Column(length = 30)
     private String modelo;
 
-    @NotBlank(message = "Placa Obrigatório")
+    @NotBlank(message = "Placa Obrigatória")
     @Column(length = 6, unique = true)
     private String placa;
 
-    @Column(nullable = false)
+    @NotNull(message = "Ano Obrigatório")
     private int ano;
 
-    @NotBlank
+    @NotBlank(message = "Categoria Obrigatória")
     @Column(length = 15)
     private String categoria;
 
-    @Column(nullable = false)
+    @NotNull(message = "Valor Diária Obrigatória")
+    @Positive(message = "O valor da diária deve ser maior que Zero")
     private double valorDiaria;
 
     private boolean disponivel = true;
