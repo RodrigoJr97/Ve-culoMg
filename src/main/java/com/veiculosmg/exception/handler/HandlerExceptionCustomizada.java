@@ -22,8 +22,8 @@ public class HandlerExceptionCustomizada {
                 .orElse("Erro de validação");
 
         ResponseException responseException = new ResponseException(
-                HttpStatus.NOT_FOUND.value(),
-                "Not Found",
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
                 mensagemErro);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseException);
