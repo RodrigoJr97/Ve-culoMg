@@ -1,6 +1,7 @@
 package com.veiculosmg.exception.handler;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
+import com.veiculosmg.exception.AtributoInvalidoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.exception.ResponseException;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseException> handleValidationException(MethodArgumentNotValidException ex) {
@@ -47,6 +49,16 @@ public class HandlerExceptionCustomizada {
                 ex.getMessage());
 
         return new ResponseEntity<>(responseException, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AtributoInvalidoException.class)
+    public ResponseEntity<ResponseException> handleAtributoInvalido(AtributoInvalidoException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage());
+
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
     }
 
 }

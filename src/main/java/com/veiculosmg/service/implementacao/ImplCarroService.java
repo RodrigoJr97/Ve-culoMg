@@ -5,6 +5,7 @@ import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.repository.CarroRepository;
 import com.veiculosmg.service.CarroService;
+import com.veiculosmg.utilitarios.FormataNome;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,7 @@ public class ImplCarroService implements CarroService {
     @Override
     public Carro salvaNovaEntidade(Carro carro) {
         try {
+            Carro.formataAtributos(carro);
             return carroRepository.save(carro);
         } catch (DataIntegrityViolationException ex) {
             ex.printStackTrace();
@@ -78,6 +80,7 @@ public class ImplCarroService implements CarroService {
         verificarPlacasDiferentes(carroAtualizado, existeCarro);
 
         carroAtualizado.setId(existeCarro.getId());
+        Carro.formataAtributos(carroAtualizado);
         carroRepository.save(carroAtualizado);
     }
 
@@ -112,7 +115,7 @@ public class ImplCarroService implements CarroService {
     private final Function<String, List<Carro>> listaCategoria = nomeCategoria ->
             listaEntidades()
                     .stream()
-                    .filter(carro -> carro.getCategoria().equals(nomeCategoria))
+                    .filter(carro -> carro.getCategoria().equalsIgnoreCase(nomeCategoria))
                     .toList();
 }
 

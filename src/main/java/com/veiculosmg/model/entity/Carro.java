@@ -1,9 +1,13 @@
 package com.veiculosmg.model.entity;
 
+import com.veiculosmg.exception.AtributoInvalidoException;
+import com.veiculosmg.utilitarios.FormataNome;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 @Entity
 public class Carro {
@@ -21,7 +25,7 @@ public class Carro {
     private String modelo;
 
     @NotBlank(message = "Placa Obrigatória")
-    @Column(length = 6, unique = true)
+    @Column(length = 10, unique = true)
     private String placa;
 
     @NotNull(message = "Ano Obrigatório")
@@ -30,6 +34,9 @@ public class Carro {
     @NotBlank(message = "Categoria Obrigatória")
     @Column(length = 15)
     private String categoria;
+
+    @NotBlank(message = "Tipo Combustível Obrigatório")
+    private String tipoCombustivel;
 
     @NotNull(message = "Valor Diária Obrigatória")
     @Positive(message = "O valor da diária deve ser maior que Zero")
@@ -47,6 +54,32 @@ public class Carro {
     }
 
     public Carro() { }
+
+    public static void formataAtributos(Carro carro) {
+       carro.setMarca(FormataNome.formatacaoNome.apply(carro.getMarca()));
+       carro.setModelo(FormataNome.formatacaoNome.apply(carro.getModelo()));
+       carro.setCategoria(FormataNome.formatacaoNome.apply(carro.getCategoria()));
+       carro.setTipoCombustivel(FormataNome.formatacaoNome.apply(carro.getTipoCombustivel()));
+       carro.setPlaca(formataPlaca.apply(carro.getPlaca()));
+    }
+
+    private static UnaryOperator<String> formataPlaca = placa -> {
+        String regexPlacaModeloAntigo = "^[A-Za-z]{3}\\d{4}$";
+        String regexPlacaMercosul = "^[A-Za-z]{3}\\d[A-Za-z]\\d{2}$";
+
+        StringBuilder placaFormatada = new StringBuilder();
+        String comecoPlaca = placa.substring(0, 3).toUpperCase();
+        String finalPlaca = placa.substring(3);
+
+        if (java.util.regex.Pattern.matches(regexPlacaModeloAntigo, placa)) {
+            placaFormatada.append(comecoPlaca).append("-").append(finalPlaca);
+            return placaFormatada.toString();
+        } else if(Pattern.matches(regexPlacaMercosul, placa)) {
+            return placa.toUpperCase();
+        }
+
+        throw new AtributoInvalidoException("Formatos Válidos: ABC1234 ou ABC1D23");
+    };
 
     public Long getId() {
         return id;
@@ -96,6 +129,14 @@ public class Carro {
         this.categoria = categoria;
     }
 
+    public String getTipoCombustivel() {
+        return tipoCombustivel;
+    }
+
+    public void setTipoCombustivel(String tipoCombustivel) {
+        this.tipoCombustivel = tipoCombustivel;
+    }
+
     public double getValorDiaria() {
         return valorDiaria;
     }
@@ -134,9 +175,9 @@ public class Carro {
                 ", placa='" + placa + '\'' +
                 ", ano=" + ano +
                 ", categoria='" + categoria + '\'' +
-                ", preco=" + valorDiaria +
+                ", tipoCombustivel='" + tipoCombustivel + '\'' +
+                ", valorDiaria=" + valorDiaria +
                 ", disponivel=" + disponivel +
                 '}';
     }
-
 }
