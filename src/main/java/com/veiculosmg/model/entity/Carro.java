@@ -71,7 +71,7 @@ public class Carro {
         String comecoPlaca = placa.substring(0, 3).toUpperCase();
         String finalPlaca = placa.substring(3);
 
-        if (java.util.regex.Pattern.matches(regexPlacaModeloAntigo, placa)) {
+        if (Pattern.matches(regexPlacaModeloAntigo, placa)) {
             placaFormatada.append(comecoPlaca).append("-").append(finalPlaca);
             return placaFormatada.toString();
         } else if(Pattern.matches(regexPlacaMercosul, placa)) {
