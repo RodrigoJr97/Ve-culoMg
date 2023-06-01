@@ -68,11 +68,11 @@ public class Carro {
         String regexPlacaMercosul = "^[A-Za-z]{3}\\d[A-Za-z]\\d{2}$";
 
         StringBuilder placaFormatada = new StringBuilder();
-        String comecoPlaca = placa.substring(0, 3).toUpperCase();
-        String finalPlaca = placa.substring(3);
+        String comecoDaPlaca = placa.substring(0, 3).toUpperCase();
+        String finalDaPlaca = placa.substring(3);
 
         if (Pattern.matches(regexPlacaModeloAntigo, placa)) {
-            placaFormatada.append(comecoPlaca).append("-").append(finalPlaca);
+            placaFormatada.append(comecoDaPlaca).append("-").append(finalDaPlaca);
             return placaFormatada.toString();
         } else if(Pattern.matches(regexPlacaMercosul, placa)) {
             return placa.toUpperCase();
