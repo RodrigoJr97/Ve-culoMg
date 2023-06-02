@@ -10,9 +10,21 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ResponseException> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                "Erro de converção da PathVariable."
+        );
+
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ResponseException> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
