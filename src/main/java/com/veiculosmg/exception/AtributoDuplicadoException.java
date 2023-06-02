@@ -5,7 +5,4 @@ public class AtributoDuplicadoException extends RuntimeException{
     public AtributoDuplicadoException(String message) {
         super(message);
     }
-
-    public AtributoDuplicadoException() {
-    }
 }

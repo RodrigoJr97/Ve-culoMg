@@ -27,11 +27,6 @@ public class ImplCarroService implements CarroService {
     public List<Carro> listaEntidades() {
         log.info("Busca lista de carros Iniciada.");
 
-        if (carroRepository.findAll().isEmpty()) {
-            log.info("Lista de Carros vazia.");
-            throw new RecursoNaoEncontradoException("Nenhum Carro Cadastrado!");
-        }
-
         log.info("Busca lista de carros Concluída.");
         return carroRepository.findAll();
     }
@@ -43,7 +38,7 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public List<Carro> disponivel() {
-        log.info("Busca de carros disponíveis Iniciada.");
+        log.info("Busca de carros disponíveis iniciada.");
         return carroRepository.findAll()
                 .stream()
                 .filter(Carro::isDisponivel)
@@ -58,13 +53,13 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public Carro salvaNovaEntidade(Carro carro) {
-        log.info("Criação de novo carro Iniciada.");
+        log.info("Criação de novo carro iniciada.");
         try {
-            log.info("Formatação nome dos atributos Iniciada.");
+            log.info("Formatação nome dos atributos iniciada.");
             Carro.formataAtributos(carro);
 
             carroRepository.save(carro);
-            log.info("Criação de novo Carro concluída.");
+            log.info("Criação de novo carro concluída.");
             return carro;
         } catch (DataIntegrityViolationException ex) {
             log.error("Erro. Placa: {}", carro.getPlaca() + " já está cadastrada.", ex);
@@ -130,6 +125,7 @@ public class ImplCarroService implements CarroService {
             throw new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!");
         }
 
+        log.info("Verificação de o carro existe concluída.");
         return existeCarroComId.get();
     }
 
