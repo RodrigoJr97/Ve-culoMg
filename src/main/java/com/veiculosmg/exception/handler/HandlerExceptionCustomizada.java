@@ -6,6 +6,7 @@ import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.exception.ResponseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,6 +14,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ResponseException> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.METHOD_NOT_ALLOWED.value(),
+                "Method Not Allowed",
+                "Métodos permitidos para esse recurso: " + ex.getSupportedHttpMethods().toString()
+        );
+
+        return new ResponseEntity<>(responseException, HttpStatus.METHOD_NOT_ALLOWED);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseException> handleValidationException(MethodArgumentNotValidException ex) {
