@@ -1,5 +1,7 @@
 package com.veiculosmg.service.implementacao;
 
+import com.veiculosmg.exception.AtributoDuplicadoException;
+import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.service.CarroService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -97,7 +100,7 @@ public class ImplCarroServiceTest {
 
     @Test
     void salvaNovoCarroComSucesso() {
-        Carro novoCarro = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", 250.5);
+        Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", 250.5);
 
         when(carroServiceMock.salvaNovaEntidade(novoCarro)).thenReturn(novoCarro);
         Carro carroSalvo = carroServiceMock.salvaNovaEntidade(novoCarro);
@@ -132,6 +135,49 @@ public class ImplCarroServiceTest {
 
         assertEquals(carroQueJaEstaSalvo.getId(), carroAtualizado.getId());
         assertEquals(carroQueJaEstaSalvo.getPlaca(), carroAtualizado.getPlaca());
+
+        verify(carroServiceMock).updateEntidade(carroAtualizado, id);
+        verifyNoMoreInteractions(carroServiceMock);
+    }
+
+    @Test
+    void salvaCarroComPlacaDuplicadaDeveLancarExcecao() {
+        Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", 250.5);
+
+        doThrow(new AtributoDuplicadoException("Placa: " + novoCarro.getPlaca() + " já está cadastrada!"))
+                .when(carroServiceMock)
+                .salvaNovaEntidade(novoCarro);
+
+        assertThrows(AtributoDuplicadoException.class, () -> carroServiceMock.salvaNovaEntidade(novoCarro));
+
+        verify(carroServiceMock).salvaNovaEntidade(novoCarro);
+        verifyNoMoreInteractions(carroServiceMock);
+    }
+
+    @Test
+    void deletaCarroPeloIdQueNaoEstaCadastradoDeveLancarExcecao() {
+        long id = 10;
+
+        doThrow(new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!"))
+                .when(carroServiceMock)
+                .deletaEntidade(id);
+
+        assertThrows(RecursoNaoEncontradoException.class, () -> carroServiceMock.deletaEntidade(id));
+
+        verify(carroServiceMock).deletaEntidade(id);
+        verifyNoMoreInteractions(carroServiceMock);
+    }
+
+    @Test
+    void atualizaCarroComPlacaDuplicadaDeveLancarExcecao() {
+        long id = 5;
+        Carro carroAtualizado = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", 250.5);
+        carroAtualizado.setId(id);
+
+        doThrow(new AtributoDuplicadoException("Placa informada já está cadastrada em outro veículo!"))
+                .when(carroServiceMock).updateEntidade(carroAtualizado, id);
+
+        assertThrows(AtributoDuplicadoException.class, () -> carroServiceMock.updateEntidade(carroAtualizado, id));
 
         verify(carroServiceMock).updateEntidade(carroAtualizado, id);
         verifyNoMoreInteractions(carroServiceMock);
