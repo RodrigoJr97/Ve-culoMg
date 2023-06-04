@@ -46,12 +46,13 @@ public class Carro {
 
     private boolean disponivel = true;
 
-    public Carro(String marca, String modelo, String placa, int ano, String categoria, double valorDiaria) {
+    public Carro(String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, double valorDiaria) {
         this.marca = marca;
         this.modelo = modelo;
         this.placa = placa;
         this.ano = ano;
         this.categoria = categoria;
+        this.tipoCombustivel = tipoCombustivel;
         this.valorDiaria = valorDiaria;
     }
 

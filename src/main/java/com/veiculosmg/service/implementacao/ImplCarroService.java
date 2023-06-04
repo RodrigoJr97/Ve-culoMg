@@ -48,7 +48,7 @@ public class ImplCarroService implements CarroService {
     @Override
     public List<Carro> listCategoria(String categoria) {
         log.info("Busca de carros {}", categoria.toUpperCase() + " Iniciada.");
-        return listaCategoria.apply(categoria);
+        return filtroCarrosPorCategoria.apply(categoria);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ImplCarroService implements CarroService {
         return placas.contains(carro.getPlaca());
     }
 
-    private final Function<String, List<Carro>> listaCategoria = nomeCategoria ->
+    private final Function<String, List<Carro>> filtroCarrosPorCategoria = nomeCategoria ->
             listaEntidades()
                     .stream()
                     .filter(carro -> carro.getCategoria().equalsIgnoreCase(nomeCategoria))
