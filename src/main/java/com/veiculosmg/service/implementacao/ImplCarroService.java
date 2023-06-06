@@ -33,7 +33,7 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public Optional<Carro> entidadePorId(Long id) {
-        return Optional.ofNullable(verificaSeCarroExiste(id));
+        return Optional.of(verificaSeCarroExiste(id));
     }
 
     @Override

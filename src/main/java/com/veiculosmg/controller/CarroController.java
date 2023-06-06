@@ -27,6 +27,21 @@ public class CarroController {
         this.carroService = carroService;
     }
 
+    @Operation(summary = "Criação de novo carro.", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Criação realizada com sucesso"),
+            @ApiResponse(responseCode = "409", description = "Placa informada já está cadastrada"),
+            @ApiResponse(responseCode = "500", description = "Erro ao criar novo carro"),
+    })
+    @PostMapping
+    public ResponseEntity<Carro> createCarro(@Valid @RequestBody Carro carro) {
+        log.info("Iniciando requisição para api/carros");
+        Carro novoCarro = carroService.salvaNovaEntidade(carro);
+
+        log.info("Requisição para api/carros concluída.");
+        return new ResponseEntity<>(novoCarro, HttpStatus.CREATED);
+    }
+
     @Operation(summary = "Busca todos os carros cadastrados.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
@@ -94,19 +109,23 @@ public class CarroController {
         return ResponseEntity.ok(listaCategoria);
     }
 
-    @Operation(summary = "Criação de novo carro.", method = "POST")
+    @Operation(summary = "Update do carro pelo Id.", method = "PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Criação realizada com sucesso"),
-            @ApiResponse(responseCode = "409", description = "Placa informada já está cadastrada"),
-            @ApiResponse(responseCode = "500", description = "Erro ao criar novo carro"),
+            @ApiResponse(responseCode = "200", description = "Update realizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar o update do carro"),
     })
-    @PostMapping
-    public ResponseEntity<Carro> createCarro(@Valid @RequestBody Carro carro) {
-        log.info("Iniciando requisição para api/carros");
-        Carro novoCarro = carroService.salvaNovaEntidade(carro);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carro, @PathVariable Long id) {
+        log.info("Iniciando requisição para api/carros/{}", id);
+        log.info("Body da requisição Carro:{}", carro);
 
-        log.info("Requisição para api/carros concluída.");
-        return new ResponseEntity<>(novoCarro, HttpStatus.CREATED);
+        Optional<Carro> carroExiste = carroService.entidadePorId(id);
+
+        return carroExiste.map(car -> {
+            carroService.updateEntidade(carro, id);
+            return new ResponseEntity<>(car, HttpStatus.OK);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Deleta carro pelo Id.", method = "DELETE")
@@ -125,25 +144,6 @@ public class CarroController {
             log.info("Requisição para api/carros/{}", id + " concluída!");
             return ResponseEntity.noContent().build();
         }).orElseThrow();
-    }
-
-    @Operation(summary = "Update do carro pelo Id.", method = "PUT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Update realizado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro ao realizar o update do carro"),
-    })
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carro, @PathVariable Long id) {
-        log.info("Iniciando requisição para api/carros/{}", id);
-        log.info("Body da requisição Carro:{}", carro);
-
-        Optional<Carro> carroExiste = carroService.entidadePorId(id);
-
-        return carroExiste.map(car -> {
-            carroService.updateEntidade(carro, id);
-            return new ResponseEntity<>(car, HttpStatus.OK);
-        }).orElse(ResponseEntity.notFound().build());
     }
 
 }

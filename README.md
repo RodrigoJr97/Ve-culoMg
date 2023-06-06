@@ -14,10 +14,7 @@ API para alocação de veículos. (Em desenvolvimento)
 | Logback    | 1.4.7  |
 | OpenAPI    | 2.0.2  |
 | Postman    |        |
-
-
-- [Pré requisitos](#pré requisitos)
-
+| JUnit      | 5.9.2  |
 
 ## Pré requisitos
 

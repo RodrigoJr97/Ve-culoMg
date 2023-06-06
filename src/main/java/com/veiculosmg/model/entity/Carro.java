@@ -6,12 +6,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 @Entity
+@AllArgsConstructor
 public class Carro {
 
     @Id
