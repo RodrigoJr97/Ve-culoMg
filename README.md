@@ -15,6 +15,7 @@ API para alocação de veículos. (Em desenvolvimento)
 | OpenAPI    | 2.0.2  |
 | Postman    |        |
 | JUnit      | 5.9.2  |
+| Lombok     |        |
 
 ## Pré requisitos
 

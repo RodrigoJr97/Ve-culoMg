@@ -83,7 +83,7 @@ public class ImplCarroService implements CarroService {
             carroRepository.save(carroAtualizado);
         } catch (DataIntegrityViolationException ex) {
             log.error("Erro ao atualizar o Carro.", ex);
-            throw new AtributoDuplicadoException("Placa informada já está cadastrada em outro veículo!");
+            throw new AtributoDuplicadoException("Placa: " + carroAtualizado.getPlaca() + " já está cadastrada!");
         }
     }
 

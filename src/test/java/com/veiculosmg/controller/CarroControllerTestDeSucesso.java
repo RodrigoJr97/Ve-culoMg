@@ -1,5 +1,6 @@
 package com.veiculosmg.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.service.implementacao.ImplCarroService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CarroControllerTest {
+public class CarroControllerTestDeSucesso {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,22 +37,17 @@ public class CarroControllerTest {
 
     @BeforeEach
     public void setUp() {
-        Carro carro1 = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
-        carro1.setId(1L);
-        carro1.setDisponivel(false);
-
-        Carro carro2 = new Carro("GM", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5);
-        carro2.setId(2L);
-        Carro carro3 = new Carro("VW", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45);
-        carro3.setId(3L);
+        Carro carro1 = new Carro(1L, "FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75, false);
+        Carro carro2 = new Carro(2L, "GM", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5, true);
+        Carro carro3 = new Carro(3L, "VW", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45, true);
 
         listaDeCarros = Arrays.asList(carro1, carro2, carro3);
     }
 
     @Test
-    void salvaNovoCarroComSucesso() throws Exception {
+    void salvaNovoCarroComSucesso_CodigoStatus_201() throws Exception {
         Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.45);
-        String requestBody = "{\"marca\": \"BMW\", \"modelo\": \"M4\", \"placa\": \"ABC-1234\", \"ano\": 2022, \"categoria\": \"Sedan\", \"tipoCombustivel\": \"Gasolina\", \"valorDiaria\": 350.45}";
+        String requestBody = asJsonString(novoCarro);
 
         when(carroService.salvaNovaEntidade(novoCarro)).thenReturn(novoCarro);
 
@@ -72,7 +69,7 @@ public class CarroControllerTest {
     }
 
     @Test
-    void retornaListaDeCarrosComSucesso() throws Exception {
+    void retornaListaDeCarrosComSucesso_CodigoStatus_200() throws Exception {
         when(carroService.listaEntidades()).thenReturn(listaDeCarros);
 
         this.mockMvc.perform(get("/api/carros"))
@@ -87,7 +84,19 @@ public class CarroControllerTest {
     }
 
     @Test
-    void retornaCarroPeloIdComSucesso() throws Exception {
+    void retornaListaVazia_CodigoStatus_200() throws Exception{
+        List<Carro> listaVazia = new ArrayList<>();
+
+        when(carroService.listaEntidades()).thenReturn(listaVazia);
+
+        mockMvc.perform(get("/api/carros"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
+    @Test
+    void retornaCarroPeloIdComSucesso_CodigoStatus_200() throws Exception {
         Carro carro = listaDeCarros.get(0);
         long id = carro.getId();
 
@@ -109,7 +118,7 @@ public class CarroControllerTest {
     }
 
     @Test
-    void retornaListaDeCarrosDisponiveis() throws Exception {
+    void retornaListaDeCarrosDisponiveis_CodigoStatus_200() throws Exception {
         List<Carro> listaDeCarrosDisponiveis = listaDeCarros.stream()
                 .filter(Carro::isDisponivel)
                 .toList();
@@ -127,7 +136,7 @@ public class CarroControllerTest {
     }
 
     @Test
-    void retornaListaDeCarrosSelecionadosPelaCategoriaInformadaComSucesso() throws Exception{
+    void retornaListaDeCarros_SelecionadosPela_CategoriaInformadaComSucesso_CodigoStatus_200() throws Exception{
         String categoria = "Sedan";
         List<Carro> listaDeCarrosPelaCategoria = listaDeCarros.stream()
                 .filter(carro -> carro.getCategoria().equalsIgnoreCase(categoria))
@@ -144,12 +153,12 @@ public class CarroControllerTest {
     }
 
     @Test
-    void atualizaCarroPassandoONovoCarroEOIdComSucesso() throws Exception {
+    void atualizaCarroPassandoONovoCarroEOIdComSucesso_CodigoStatus_200() throws Exception {
         long id = 1;
         Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.5);
         novoCarro.setId(id);
 
-        String requestBody = "{\"marca\": \"BMW\", \"modelo\": \"M4\", \"placa\": \"ABC-1234\", \"ano\": 2022, \"categoria\": \"Sedan\", \"tipoCombustivel\": \"Gasolina\", \"valorDiaria\": 350.5}";
+        String requestBody = asJsonString(novoCarro);
 
         when(carroService.entidadePorId(id)).thenReturn(Optional.of(novoCarro));
         doNothing().when(carroService).updateEntidade(novoCarro, id);
@@ -171,7 +180,7 @@ public class CarroControllerTest {
     }
 
     @Test
-    void deletaOCarroPeloIdInformadoComSucesso() throws Exception {
+    void deletaOCarroPeloIdInformadoComSucesso_CodigoStatus_204() throws Exception {
         long id = 1L;
         Carro carro = listaDeCarros.get(0);
 
@@ -183,6 +192,15 @@ public class CarroControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(carroService).deletaEntidade(id);
+    }
+
+    // Converte um objeto Java para uma representação JSON
+    private String asJsonString(Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
