@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class ClienteController {
         clienteService.salvaNovaEntidade(cliente);
 
         log.info("Criação de novo cliente concluída.'");
-        return ResponseEntity.ok(cliente);
+        return new ResponseEntity<>(cliente, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Busca todos clientes cadastrados.", method = "GET")
@@ -82,14 +83,10 @@ public class ClienteController {
         log.info("Iniciando requisiçao para buscar cliente pelo id. Path:'api/clientes/{}'", id);
         log.info("Body da requisição Cliente:{}", clienteAtualizado);
 
-        Optional<Cliente> clienteComIdInformado = clienteService.entidadePorId(id);
+        clienteService.updateEntidade(clienteAtualizado, id);
 
-        return clienteComIdInformado.map(cliente -> {
-            clienteService.updateEntidade(clienteAtualizado, id);
-
-            log.info("Atualização do cliente relizada com sucesso");
-            return ResponseEntity.ok(cliente);
-        }).orElse(ResponseEntity.notFound().build());
+        log.info("Atualização do cliente relizada com sucesso");
+        return ResponseEntity.ok(clienteAtualizado);
     }
 
     @Operation(summary = "Deleta cliente pelo Id.", method = "DELETE")
@@ -101,14 +98,10 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClienteById(@PathVariable Long id) {
         log.info("Iniciando requisiçao para deletar cliente pelo id. Path:'api/clientes/{}'", id);
-        Optional<Cliente> cliente = clienteService.entidadePorId(id);
+        clienteService.deletaEntidade(id);
 
-        return cliente.map(cli -> {
-            clienteService.deletaEntidade(id);
-
-            log.info("Delete do cliente relizada com sucesso");
-            return ResponseEntity.noContent().build();
-        }).orElse(ResponseEntity.notFound().build());
+        log.info("Delete do cliente relizada com sucesso");
+        return ResponseEntity.noContent().build();
     }
 
 }

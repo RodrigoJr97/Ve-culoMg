@@ -2,7 +2,6 @@ package com.veiculosmg.service.implementacao;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
-import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.entity.Cliente;
 import com.veiculosmg.model.repository.ClienteRepository;
 import com.veiculosmg.service.ClienteService;

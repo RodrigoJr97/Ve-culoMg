@@ -35,11 +35,11 @@ public class CarroController {
     })
     @PostMapping
     public ResponseEntity<Carro> createCarro(@Valid @RequestBody Carro carro) {
-        log.info("Iniciando requisição para api/carros");
-        Carro novoCarro = carroService.salvaNovaEntidade(carro);
+        log.info("Iniciando requisiçao para criar novo carro. Path:'api/carros'");
+        carroService.salvaNovaEntidade(carro);
 
-        log.info("Requisição para api/carros concluída.");
-        return new ResponseEntity<>(novoCarro, HttpStatus.CREATED);
+        log.info("Criação de novo carro concluída.");
+        return new ResponseEntity<>(carro, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Busca todos carros cadastrados.", method = "GET")
@@ -49,14 +49,14 @@ public class CarroController {
     })
     @GetMapping
     public ResponseEntity<List<Carro>> getCarros() {
-        log.info("Iniciando requisição para api/carros");
+        log.info("Iniciando requisiçao para buscar lista carro. Path:'api/carros'");
         List<Carro> listaCarros = carroService.listaEntidades();
 
-        log.info("Requisição para api/carros concluída.");
+        log.info("Busca lista de carros concluída.");
         return ResponseEntity.ok(listaCarros);
     }
 
-    @Operation(summary = "Busca carro por Id.", method = "GET")
+    @Operation(summary = "Busca carro por id informado.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
@@ -64,29 +64,29 @@ public class CarroController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<?> getCarroById(@PathVariable Long id) {
-        log.info("Iniciando requisição para api/carros/{}", id);
+        log.info("Iniciando requisiçao para buscar carro pelo id. Path:'api/carros/{}'", id);
         Optional<Carro> carro = carroService.entidadePorId(id);
 
-        log.info("Requisição para api/carros/{}", id + " concluída.");
-        return new ResponseEntity<>(carro, HttpStatus.OK);
+        log.info("Busca carro pelo id concluída.");
+        return ResponseEntity.ok(carro);
     }
 
     @Operation(summary = "Busca carros disponíveis.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
-            @ApiResponse(responseCode = "500", description = "Erro ao realizar a busca de carros disponíveis"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar a busca de carros disponiveis"),
     })
     @GetMapping("/disponiveis")
     public ResponseEntity<?> getCarrosDisponiveis() {
-        log.info("Iniciando requisição para api/carros/disponiveis");
+        log.info("Iniciando requisiçao para buscar lista carros disponiveis. Path:'api/carros/disponiveis'");
         List<Carro> disponivel = carroService.disponivel();
 
         if (disponivel.isEmpty()) {
-            log.info("Requisição para api/carros/disponiveis concluída. Nenhum carro disponível encontrado.");
-            return ResponseEntity.ok("Nenhum carro disponível encontrado.");
+            log.info("Busca carros disponíveis concluída. Nenhum carro disponivel encontrado.");
+            return ResponseEntity.ok("Nenhum carro disponivel encontrado.");
         }
 
-        log.info("Requisição para api/carros/disponiveis concluída.");
+        log.info("Busca carros disponiveis concluída.");
         return ResponseEntity.ok(disponivel);
     }
 
@@ -97,15 +97,15 @@ public class CarroController {
     })
     @GetMapping("/categoria/{categoria}")
     public ResponseEntity<?> getCarrosPorCategoria(@PathVariable String categoria) {
-        log.info("Iniciando requisição para api/carros/categoria/{}", categoria.toUpperCase());
+        log.info("Iniciando requisiçao para buscar carros pela categoria. Path:'api/carros/{}'", categoria.toUpperCase());
         List<Carro> listaCategoria = carroService.listCategoria(categoria);
 
         if (listaCategoria.isEmpty()) {
-            log.info("Requisição para api/carros/categoria/{}", categoria.toUpperCase() + " concluída. Lista vazia.");
+            log.info("Busca carros pela categoria concluída. Lista vazia.");
             return ResponseEntity.ok("Nenhum carro da categoria " + categoria.toUpperCase() + " foi encontrado.");
         }
 
-        log.info("Requisição para api/carros/categoria/{}", categoria.toUpperCase() + " concluída.");
+        log.info("Busca carros pela categoria concluída.");
         return ResponseEntity.ok(listaCategoria);
     }
 
@@ -117,17 +117,12 @@ public class CarroController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carro, @PathVariable Long id) {
-        log.info("Iniciando requisiçao para buscar carro pelo id. Path:'api/carros/{}'", id);
+        log.info("Iniciando requisiçao para atualizar carro pelo id. Path:'api/carros/{}'", id);
         log.info("Body da requisição Carro:{}", carro);
+        carroService.updateEntidade(carro, id);
 
-        Optional<Carro> carroExiste = carroService.entidadePorId(id);
-
-        return carroExiste.map(car -> {
-            carroService.updateEntidade(carro, id);
-
-            log.info("Atualização do carro realiazada com sucesso.");
-            return new ResponseEntity<>(car, HttpStatus.OK);
-        }).orElse(ResponseEntity.notFound().build());
+        log.info("Atualização do carro realiazada com sucesso.");
+        return ResponseEntity.ok(carro);
     }
 
     @Operation(summary = "Deleta carro pelo Id.", method = "DELETE")
@@ -138,14 +133,11 @@ public class CarroController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCarroById(@PathVariable Long id) {
-        log.info("Iniciando requisição para api/carros/{}", id);
-        Optional<Carro> carro = carroService.entidadePorId(id);
+        log.info("Iniciando requisiçao para deletar carro pelo id. Path:'api/carros/{}'", id);
+        carroService.deletaEntidade(id);
 
-        return carro.map(car -> {
-            carroService.deletaEntidade(id);
-            log.info("Requisição para api/carros/{}", id + " concluída!");
-            return ResponseEntity.noContent().build();
-        }).orElseThrow();
+        log.info("Delete do carro relizada com sucesso");
+        return ResponseEntity.noContent().build();
     }
 
 }

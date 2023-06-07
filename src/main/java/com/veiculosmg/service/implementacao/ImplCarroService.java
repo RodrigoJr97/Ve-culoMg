@@ -89,15 +89,12 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public void deletaEntidade(Long id) {
-        log.info("Delete de carro Iniciado.");
-        Optional<Carro> existeCarroComId = carroRepository.findById(id);
+        log.info("Delete do Cliente Id:{}", id + " iniciada.");
 
-        if (existeCarroComId.isEmpty()) {
-            log.warn("Carro com ID: {} ", id + " não encontrado!");
-            throw new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!");
-        }
+        log.info("Verificando se Cliente Id:{}", id + " existe.");
+        verificaSeCarroExiste(id);
 
-        log.info("Delete do Carro com Id: {} ", id + " concluída!");
+        log.info("Delete do Carro concluído");
         carroRepository.deleteById(id);
     }
 
@@ -106,10 +103,10 @@ public class ImplCarroService implements CarroService {
 
     private void verificarPlacasDiferentes(Carro carroAtualizado, Carro carroJaCadastrado) {
         log.info("Verificando se Placa: {}", carroAtualizado.getPlaca() + " já está cadastrada.");
-        String placaDoCarro = carroJaCadastrado.getPlaca();
+        String placaDoCarroJaCadastrado = carroJaCadastrado.getPlaca();
         String placaDoNovoCarro = carroAtualizado.getPlaca();
 
-        if (vericaSeExistePlacaCadastrada(carroAtualizado) && !placaDoCarro.equalsIgnoreCase(placaDoNovoCarro)) {
+        if (vericaSeExistePlacaCadastrada(carroAtualizado) && !placaDoCarroJaCadastrado.equalsIgnoreCase(placaDoNovoCarro)) {
             log.warn("Placa: {}", carroAtualizado.getPlaca() + " está cadastrada em outro veículo!");
             throw new AtributoDuplicadoException("Placa informada já está salva em outro veículo!");
         }
