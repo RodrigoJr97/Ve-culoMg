@@ -117,15 +117,15 @@ public class ImplCarroService implements CarroService {
 
     private Carro verificaSeCarroExiste(Long id) {
         log.info("Verificando se o carro existe.");
-        Optional<Carro> existeCarroComId = carroRepository.findById(id);
+        Optional<Carro> existeCarroComOIdInformado = carroRepository.findById(id);
 
-        if (existeCarroComId.isEmpty()) {
+        if (existeCarroComOIdInformado.isEmpty()) {
             log.info("Carro com Id: {}", id + " não encontrado!");
             throw new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!");
         }
 
-        log.info("Verificação de o carro existe concluída.");
-        return existeCarroComId.get();
+        log.info("Verificação se o carro existe concluída.");
+        return existeCarroComOIdInformado.get();
     }
 
     private boolean vericaSeExistePlacaCadastrada(Carro carro) {

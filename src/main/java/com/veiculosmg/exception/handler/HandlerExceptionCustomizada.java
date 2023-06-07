@@ -1,9 +1,6 @@
 package com.veiculosmg.exception.handler;
 
-import com.veiculosmg.exception.AtributoDuplicadoException;
-import com.veiculosmg.exception.AtributoInvalidoException;
-import com.veiculosmg.exception.RecursoNaoEncontradoException;
-import com.veiculosmg.exception.ResponseException;
+import com.veiculosmg.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -14,6 +11,16 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
+
+    @ExceptionHandler(CpfOuTelefoneContemLetraException.class)
+    public ResponseEntity<ResponseException> handleCpfOuTelefoneContemLetra(CpfOuTelefoneContemLetraException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage());
+
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ResponseException> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {

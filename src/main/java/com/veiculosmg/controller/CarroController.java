@@ -42,9 +42,9 @@ public class CarroController {
         return new ResponseEntity<>(novoCarro, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Busca todos os carros cadastrados.", method = "GET")
+    @Operation(summary = "Busca todos carros cadastrados.", method = "GET")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Busca lista de carros realizada com sucesso"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar a busca de carros"),
     })
     @GetMapping
@@ -109,21 +109,23 @@ public class CarroController {
         return ResponseEntity.ok(listaCategoria);
     }
 
-    @Operation(summary = "Update do carro pelo Id.", method = "PUT")
+    @Operation(summary = "Atualiza do carro pelo Id.", method = "PUT")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Update realizado com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Atualização do carro pelo id realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar o update do carro"),
     })
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carro, @PathVariable Long id) {
-        log.info("Iniciando requisição para api/carros/{}", id);
+        log.info("Iniciando requisiçao para buscar carro pelo id. Path:'api/carros/{}'", id);
         log.info("Body da requisição Carro:{}", carro);
 
         Optional<Carro> carroExiste = carroService.entidadePorId(id);
 
         return carroExiste.map(car -> {
             carroService.updateEntidade(carro, id);
+
+            log.info("Atualização do carro realiazada com sucesso.");
             return new ResponseEntity<>(car, HttpStatus.OK);
         }).orElse(ResponseEntity.notFound().build());
     }
