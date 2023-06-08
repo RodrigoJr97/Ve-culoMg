@@ -8,10 +8,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = NumeroTelefone.NumeroTelefoneValidator.class)
+@Constraint(validatedBy = ValidacaoNumeroTelefone.NumeroTelefoneValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NumeroTelefone {
+public @interface ValidacaoNumeroTelefone {
 
     String message() default "Número de telefone inválido";
 
@@ -19,9 +19,9 @@ public @interface NumeroTelefone {
 
     Class<? extends Payload>[] payload() default {};
 
-    class NumeroTelefoneValidator implements ConstraintValidator<NumeroTelefone, String> {
+    class NumeroTelefoneValidator implements ConstraintValidator<ValidacaoNumeroTelefone, String> {
 
-        private static final String PADRAO_NUMERO_TELEFONE = "^[0-9]{10}$";
+        private static final String PADRAO_NUMERO_TELEFONE = "^[0-9]{11}$";
 
         @Override
         public boolean isValid(String numeroTelefone, ConstraintValidatorContext context) {

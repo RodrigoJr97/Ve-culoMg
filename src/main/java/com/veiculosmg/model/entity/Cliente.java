@@ -1,6 +1,6 @@
 package com.veiculosmg.model.entity;
 
-import com.veiculosmg.utilitarios.anotacoes.NumeroTelefone;
+import com.veiculosmg.utilitarios.anotacoes.ValidacaoNumeroTelefone;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,7 +31,7 @@ public class Cliente {
     @Column(unique = true)
     private String cpf;
 
-    @NumeroTelefone
+    @ValidacaoNumeroTelefone
     @Column(unique = true)
     private String numeroTelefone;
 

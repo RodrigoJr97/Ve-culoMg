@@ -41,9 +41,7 @@ public class ImplCarroService implements CarroService {
 
     @Override
     public List<Carro> listaEntidades() {
-        log.info("Busca lista de carros Iniciada.");
-
-        log.info("Busca lista de carros Concluída.");
+        log.info("Busca lista de carros iniciada.");
         return carroRepository.findAll();
     }
 
@@ -64,16 +62,18 @@ public class ImplCarroService implements CarroService {
     @Override
     public List<Carro> listCategoria(String categoria) {
         log.info("Busca de carros {}", categoria.toUpperCase() + " Iniciada.");
+        log.info("Busca de carros pela categoria concluída.");
         return filtroCarrosPorCategoria.apply(categoria);
     }
 
     @Override
     public void updateEntidade(Carro carroAtualizado, Long id) {
-        log.info("Atualização do Carro Id:{}", id + " Iniciada.");
+        log.info("Atualização do carro Id:{}", id + " iniciada.");
+        log.info("Body da requisição Carro:{}", carroAtualizado);
         try {
             Carro existeCarroComId = verificaSeCarroExiste(id);
 
-            log.info("Formatando nome dos atributos do Carro atualizado.");
+            log.info("Formatando nome dos atributos do carro atualizado.");
             Carro.formataAtributos(carroAtualizado);
 
             verificarPlacasDiferentes(carroAtualizado, existeCarroComId);
@@ -82,19 +82,17 @@ public class ImplCarroService implements CarroService {
             log.info("Atualização do carro concluída.");
             carroRepository.save(carroAtualizado);
         } catch (DataIntegrityViolationException ex) {
-            log.error("Erro ao atualizar o Carro.", ex);
+            log.error("Erro ao atualizar o carro.", ex);
             throw new AtributoDuplicadoException("Placa: " + carroAtualizado.getPlaca() + " já está cadastrada!");
         }
     }
 
     @Override
     public void deletaEntidade(Long id) {
-        log.info("Delete do Cliente Id:{}", id + " iniciada.");
-
-        log.info("Verificando se Cliente Id:{}", id + " existe.");
+        log.info("Delete do carro Id:{}", id + " iniciada.");
         verificaSeCarroExiste(id);
 
-        log.info("Delete do Carro concluído");
+        log.info("Delete do carro concluído");
         carroRepository.deleteById(id);
     }
 
@@ -102,7 +100,7 @@ public class ImplCarroService implements CarroService {
     /* Privado */
 
     private void verificarPlacasDiferentes(Carro carroAtualizado, Carro carroJaCadastrado) {
-        log.info("Verificando se Placa: {}", carroAtualizado.getPlaca() + " já está cadastrada.");
+        log.info("Verificando se placa: {}", carroAtualizado.getPlaca() + " já está cadastrada.");
         String placaDoCarroJaCadastrado = carroJaCadastrado.getPlaca();
         String placaDoNovoCarro = carroAtualizado.getPlaca();
 
@@ -118,7 +116,7 @@ public class ImplCarroService implements CarroService {
 
         if (existeCarroComOIdInformado.isEmpty()) {
             log.info("Carro com Id: {}", id + " não encontrado!");
-            throw new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!");
+            throw new RecursoNaoEncontradoException("Carro com Id: " + id + " não Encontrado!");
         }
 
         log.info("Verificação se o carro existe concluída.");
