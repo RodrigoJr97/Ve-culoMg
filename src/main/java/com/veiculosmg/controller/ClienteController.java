@@ -36,60 +36,44 @@ public class ClienteController {
     })
     @PostMapping
     public ResponseEntity<Cliente> createCliente(@Valid @RequestBody Cliente cliente) {
-        log.info("Iniciando requisiçao para criar novo cliente. Path:'api/clientes'");
         clienteService.salvaNovaEntidade(cliente);
-
-        log.info("Criação de novo cliente concluída.'");
         return new ResponseEntity<>(cliente, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Busca todos clientes cadastrados.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca lista de clientes realizada com sucesso"),
-            @ApiResponse(responseCode = "500", description = "Erro ao criar novo cliente"),
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar lista de clientes"),
     })
     @GetMapping
     public ResponseEntity<List<Cliente>> getClientes() {
-        log.info("Iniciando requisiçao para buscar lista de cliente. Path:'api/clientes'");
-        List<Cliente> listaClientes = clienteService.listaEntidades();
-
-        log.info("Busca lista de clientes concluída.");
-        return ResponseEntity.ok(listaClientes);
+        return ResponseEntity.ok(clienteService.listaEntidades());
     }
 
     @Operation(summary = "Busca cliente pelo id informado.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca cliente pelo id realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente com o id informado não foi encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro ao criar novo cliente"),
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar cliente pelo id"),
     })
     @GetMapping("/{id}")
     public ResponseEntity<?> getClienteById(@PathVariable Long id) {
-        log.info("Iniciando requisiçao para buscar cliente pelo id. Path:'api/clientes/{}'", id);
-        Optional<Cliente> cliente = clienteService.entidadePorId(id);
-
-        log.info("Busca cliente pelo id concluída.");
-        return ResponseEntity.ok(cliente);
+        return ResponseEntity.ok(clienteService.entidadePorId(id));
     }
 
-    @Operation(summary = "Atualiza cliente pelo id informado.", method = "PUT")
+    @Operation(summary = "Atualizar cliente pelo id informado.", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualização do cliente pelo id realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente com o id informado não foi encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro ao criar novo cliente"),
+            @ApiResponse(responseCode = "500", description = "Erro ao atualizar cliente"),
     })
     @PutMapping("/{id}")
     public ResponseEntity<?> updateClienteById(@Valid @RequestBody Cliente clienteAtualizado, @PathVariable Long id) {
-        log.info("Iniciando requisiçao para buscar cliente pelo id. Path:'api/clientes/{}'", id);
-        log.info("Body da requisição Cliente:{}", clienteAtualizado);
-
         clienteService.updateEntidade(clienteAtualizado, id);
-
-        log.info("Atualização do cliente relizada com sucesso");
         return ResponseEntity.ok(clienteAtualizado);
     }
 
-    @Operation(summary = "Deleta cliente pelo Id.", method = "DELETE")
+    @Operation(summary = "Deleta cliente pelo id.", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete do cliente realizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente com o dd informado não foi encontrado"),
@@ -97,10 +81,7 @@ public class ClienteController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClienteById(@PathVariable Long id) {
-        log.info("Iniciando requisiçao para deletar cliente pelo id. Path:'api/clientes/{}'", id);
         clienteService.deletaEntidade(id);
-
-        log.info("Delete do cliente relizada com sucesso");
         return ResponseEntity.noContent().build();
     }
 

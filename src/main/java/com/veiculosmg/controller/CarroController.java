@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/carros", produces = {"application/json"})
 @Tag(name = "api/carros")
-@Slf4j
 public class CarroController {
 
     private final ImplCarroService carroService;
@@ -51,8 +49,8 @@ public class CarroController {
     @Operation(summary = "Busca carro por id informado.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro ao realizar a busca de carro por Id"),
+            @ApiResponse(responseCode = "404", description = "Carro com o id informado não foi encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro ao realizar a busca de carro por id"),
     })
     @GetMapping("/{id}")
     public ResponseEntity<?> getCarroById(@PathVariable Long id) {
@@ -70,7 +68,6 @@ public class CarroController {
         if (disponivel.isEmpty()) {
             return ResponseEntity.ok("Nenhum carro disponivel encontrado.");
         }
-
         return ResponseEntity.ok(disponivel);
     }
 
@@ -85,26 +82,25 @@ public class CarroController {
         if (listaCategoria.isEmpty()) {
             return ResponseEntity.ok("Nenhum carro da categoria " + categoria.toUpperCase() + " foi encontrado.");
         }
-
         return ResponseEntity.ok(listaCategoria);
     }
 
-    @Operation(summary = "Atualiza do carro pelo Id.", method = "PUT")
+    @Operation(summary = "Atualizar o carro pelo id.", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualização do carro pelo id realizada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
+            @ApiResponse(responseCode = "404", description = "Carro com o id informado não foi encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar o update do carro"),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carro, @PathVariable Long id) {
-        carroService.updateEntidade(carro, id);
-        return ResponseEntity.ok(carro);
+    public ResponseEntity<?> updateCarroById(@Valid @RequestBody Carro carroAtualizado, @PathVariable Long id) {
+        carroService.updateEntidade(carroAtualizado, id);
+        return ResponseEntity.ok(carroAtualizado);
     }
 
-    @Operation(summary = "Deleta carro pelo Id.", method = "DELETE")
+    @Operation(summary = "Deleta carro pelo id.", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete do carro realizada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Carro com o Id informado não foi encontrado"),
+            @ApiResponse(responseCode = "404", description = "Carro com o id informado não foi encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar o delete do carro"),
     })
     @DeleteMapping("/{id}")
