@@ -43,6 +43,10 @@ public class Cliente {
     @NotNull(message = "Data de Nascimento Obrigatória")
     private LocalDate dataNascimento;
 
+    @OneToOne(cascade = { CascadeType.DETACH } )
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
     public Cliente(String nome, String cpf, String numeroTelefone, String email, LocalDate dataNascimento) {
         this.nome = nome;
         this.cpf = cpf;

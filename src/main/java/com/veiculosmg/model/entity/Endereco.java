@@ -1,10 +1,7 @@
 package com.veiculosmg.model.entity;
 
 import com.veiculosmg.utilitarios.anotacoes.CEP;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -39,6 +36,10 @@ public class Endereco implements Serializable {
 
     @NotBlank(message = "UF obrigatório")
     private String uf;
+
+    @OneToOne(cascade = { CascadeType.DETACH } )
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
     public Endereco(String cep, String logradouro, String complemento, String bairro, String localidade, String uf) {
         this.cep = cep;
