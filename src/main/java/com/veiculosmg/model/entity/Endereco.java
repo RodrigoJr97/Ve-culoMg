@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class Endereco {
+public class Endereco implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
