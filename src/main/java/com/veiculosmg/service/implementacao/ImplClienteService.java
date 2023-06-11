@@ -1,14 +1,18 @@
 package com.veiculosmg.service.implementacao;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
+import com.veiculosmg.exception.MenorDeIdadeException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Cliente;
 import com.veiculosmg.model.repository.ClienteRepository;
+import com.veiculosmg.model.repository.EnderecoRepository;
 import com.veiculosmg.service.ClienteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +23,20 @@ public class ImplClienteService implements ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public ImplClienteService(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+    private final EnderecoRepository enderecoRepository;
 
+    public ImplClienteService(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository) {
+        this.clienteRepository = clienteRepository;
+        this.enderecoRepository = enderecoRepository;
+    }
 
     @Override
     public Cliente salvaNovaEntidade(Cliente cliente) {
         log.info("Criação de novo cliente iniciada.");
         List<String> listaDeAtributosDuplicados = obterAtributosDuplicados(cliente);
         try {
+            verificaSeClienteEMaiorDeIdade(cliente.getDataNascimento());
+
             clienteRepository.save(cliente);
 
             log.info("Criação de novo cliente concluída.");
@@ -110,6 +118,14 @@ public class ImplClienteService implements ClienteService {
         log.info("Verificação concluída.");
     }
 
+    private void verificaSeClienteEMaiorDeIdade(LocalDate dataNascimento) {
+        LocalDate dataAtual = LocalDate.now();
+        int idade = Period.between(dataNascimento, dataAtual).getYears();
+
+        if (idade < 18) {
+            throw new MenorDeIdadeException("Cliente é menor de idade.");
+        }
+    }
 
     private Cliente verificaSeClienteExiste(Long id) {
         log.info("Verificando se cliente existe.");

@@ -12,6 +12,17 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
 
+
+    @ExceptionHandler(MenorDeIdadeException.class)
+    public ResponseEntity<ResponseException> handleClienteMenorDeIdade(MenorDeIdadeException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.BAD_REQUEST.value(),
+                "Cliente é menor de idade.",
+                ex.getMessage());
+
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(CpfOuTelefoneContemLetraException.class)
     public ResponseEntity<ResponseException> handleCpfOuTelefoneContemLetra(CpfOuTelefoneContemLetraException ex) {
         ResponseException responseException = new ResponseException(

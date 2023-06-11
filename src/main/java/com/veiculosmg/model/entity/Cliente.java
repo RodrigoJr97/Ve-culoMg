@@ -13,8 +13,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(of = {"cpf", "numeroTelefone", "email"})
 @ToString
 public class Cliente {
@@ -43,8 +42,8 @@ public class Cliente {
     @NotNull(message = "Data de Nascimento Obrigatória")
     private LocalDate dataNascimento;
 
-    @OneToOne(cascade = { CascadeType.DETACH } )
-    @JoinColumn(name = "endereco_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
     public Cliente(String nome, String cpf, String numeroTelefone, String email, LocalDate dataNascimento) {

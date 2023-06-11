@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.io.Serializable;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class Endereco implements Serializable {
+public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,9 +35,7 @@ public class Endereco implements Serializable {
     @NotBlank(message = "UF obrigatório")
     private String uf;
 
-    @OneToOne(cascade = { CascadeType.DETACH } )
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+
 
     public Endereco(String cep, String logradouro, String complemento, String bairro, String localidade, String uf) {
         this.cep = cep;
