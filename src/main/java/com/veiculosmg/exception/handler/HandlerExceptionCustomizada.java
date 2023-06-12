@@ -17,7 +17,7 @@ public class HandlerExceptionCustomizada {
     public ResponseEntity<ResponseException> handleClienteMenorDeIdade(MenorDeIdadeException ex) {
         ResponseException responseException = new ResponseException(
                 HttpStatus.BAD_REQUEST.value(),
-                "Cliente é menor de idade.",
+                "Permite cadastro somente para maiores de 18",
                 ex.getMessage());
 
         return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);

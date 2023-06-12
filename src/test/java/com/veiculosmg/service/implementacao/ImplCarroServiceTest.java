@@ -24,42 +24,51 @@ import static org.mockito.Mockito.*;
 public class ImplCarroServiceTest {
 
     @InjectMocks
-    private ImplCarroService carroService;
+    private ImplCarroService implCarroService;
 
     @Mock
     private CarroService carroServiceMock;
 
-    private List<Carro> listaDeCarros;
+    private List<Carro> listaCarros;
 
     @BeforeEach
     public void setUp() {
-        listaDeCarros = new ArrayList<>();
-        listaDeCarros.add(new Carro("Bmw", "X5", "MGU-0002", 2022, "SUV", "Gasolina", 350.45));
-        listaDeCarros.add(new Carro("Gm", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5));
-        listaDeCarros.add(new Carro("Vw", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45));
-        listaDeCarros.add(new Carro("Gm", "Opala", "RDG9T92", 1992, "Sedan", "Álcool", 320.85));
-        listaDeCarros.add(new Carro("Vw", "Golf GTI", "MGU-0004", 2022, "Hatch", "Gasolina", 300.0));
+        listaCarros = new ArrayList<>();
+        listaCarros.add(new Carro("Bmw", "X5", "MGU-0002", 2022, "SUV", "Gasolina", 350.45));
+        listaCarros.add(new Carro("Gm", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5));
+        listaCarros.add(new Carro("Vw", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45));
     }
 
     @Test
-    void buscarTodosOsCarrosComSucesso() {
-        when(carroServiceMock.listaEntidades()).thenReturn(listaDeCarros);
+    void testSalvaNovoCarroComSucesso() {
+        Carro novoCarro = listaCarros.get(0);
+
+        when(carroServiceMock.salvaNovaEntidade(novoCarro)).thenReturn(novoCarro);
+        Carro carroSalvo = carroServiceMock.salvaNovaEntidade(novoCarro);
+
+        assertEquals(novoCarro, carroSalvo);
+        verify(carroServiceMock).salvaNovaEntidade(novoCarro);
+        verifyNoMoreInteractions(carroServiceMock);
+    }
+
+    @Test
+    void testBuscarTodosOsCarrosComSucesso() {
+        when(carroServiceMock.listaEntidades()).thenReturn(listaCarros);
 
         List<Carro> listaDeCarrosRetornadoPeloMetodo = carroServiceMock.listaEntidades();
 
-        assertEquals(listaDeCarros, listaDeCarrosRetornadoPeloMetodo);
+        assertEquals(listaCarros, listaDeCarrosRetornadoPeloMetodo);
         verify(carroServiceMock).listaEntidades();
         verifyNoMoreInteractions(carroServiceMock);
     }
 
     @Test
-    void buscaUmCarroPeloIdComSucesso() {
+    void testBuscaUmCarroPeloIdComSucesso() {
         long id = 5;
-        Optional<Carro> carroEsperado = Optional.ofNullable(listaDeCarros.get(1));
+        Optional<Carro> carroEsperado = Optional.ofNullable(listaCarros.get(1));
         carroEsperado.get().setId(id);
 
         when(carroServiceMock.entidadePorId(id)).thenReturn(carroEsperado);
-
         Optional<Carro> carroObtidoPeloMetodo = carroServiceMock.entidadePorId(id);
 
         assertEquals(carroEsperado, carroObtidoPeloMetodo);
@@ -68,8 +77,8 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void buscaCarrosDisponiveisComSucesso() {
-        List<Carro> listaDeCarrosDisponiveis = listaDeCarros.stream()
+    void testBuscaCarrosDisponiveisComSucesso() {
+        List<Carro> listaDeCarrosDisponiveis = listaCarros.stream()
                 .filter(Carro::isDisponivel)
                 .toList();
 
@@ -83,9 +92,9 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void bucaCarrosPelaCategoriaComSucesso() {
+    void testBucaCarrosPelaCategoriaComSucesso() {
         String categoria = "Sedan";
-        List<Carro> carrosPelaCategoria = listaDeCarros.stream()
+        List<Carro> carrosPelaCategoria = listaCarros.stream()
                 .filter(carro -> carro.getCategoria().equalsIgnoreCase(categoria))
                 .collect(Collectors.toList());
 
@@ -99,38 +108,25 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void salvaNovoCarroComSucesso() {
-        Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", 250.5);
+    void testDeleteCarroPeloIdComSucesso() {
+        long id = 1;
+        doNothing().when(carroServiceMock).deletaEntidade(id);
+        carroServiceMock.deletaEntidade(id);
 
-        when(carroServiceMock.salvaNovaEntidade(novoCarro)).thenReturn(novoCarro);
-        Carro carroSalvo = carroServiceMock.salvaNovaEntidade(novoCarro);
-
-        assertEquals(novoCarro, carroSalvo);
-        verify(carroServiceMock).salvaNovaEntidade(novoCarro);
+        verify(carroServiceMock).deletaEntidade(id);
         verifyNoMoreInteractions(carroServiceMock);
     }
 
     @Test
-    void deleteCarroPeloId() {
-        doNothing().when(carroServiceMock).deletaEntidade(5L);
-
-        carroServiceMock.deletaEntidade(5L);
-
-        verify(carroServiceMock).deletaEntidade(5L);
-        verifyNoMoreInteractions(carroServiceMock);
-    }
-
-    @Test
-    void atualizaCarroQueFoiSelecionadoPeloIdComSucesso() {
+    void testAtualizaCarroQueFoiSelecionadoPeloIdComSucesso() {
         long id = 5;
-        Carro carroQueJaEstaSalvo = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", 250.5);
+        Carro carroQueJaEstaSalvo = listaCarros.get(0);
         carroQueJaEstaSalvo.setId(id);
 
-        Carro carroAtualizado = new Carro("Vw", "Golf GTI", "MGU0097", 2022, "Hatch", "Gasolina", 300.0);
+        Carro carroAtualizado = new Carro("Vw", "Golf GTI", "MGU-0002", 2022, "Hatch", "Gasolina", 300.0);
         carroAtualizado.setId(id);
 
         doNothing().when(carroServiceMock).updateEntidade(carroAtualizado, id);
-
         carroServiceMock.updateEntidade(carroAtualizado, id);
 
         assertEquals(carroQueJaEstaSalvo.getId(), carroAtualizado.getId());
@@ -141,7 +137,7 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void salvaCarroComPlacaDuplicadaDeveLancarExcecao() {
+    void testSalvaCarroComPlacaDuplicadaDeveLancarExcecao() {
         Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", 250.5);
 
         doThrow(new AtributoDuplicadoException("Placa: " + novoCarro.getPlaca() + " já está cadastrada!"))
@@ -155,7 +151,21 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void deletaCarroPeloIdQueNaoEstaCadastradoDeveLancarExcecao() {
+    void testBuscaCarroPeloIdQueNaoEstaCadastradoDeveLancarExcecao() {
+        long id = 1;
+
+        doThrow(new RecursoNaoEncontradoException("Carro com Id: " + id + " não Encontrado!"))
+                .when(carroServiceMock)
+                .entidadePorId(id);
+
+        assertThrows(RecursoNaoEncontradoException.class, () -> carroServiceMock.entidadePorId(id));
+
+        verify(carroServiceMock).entidadePorId(id);
+        verifyNoMoreInteractions(carroServiceMock);
+    }
+
+    @Test
+    void testDeletaCarroPeloIdQueNaoEstaCadastradoDeveLancarExcecao() {
         long id = 10;
 
         doThrow(new RecursoNaoEncontradoException("Carro com Id: " + id + " Não Encontrado!"))
@@ -169,7 +179,7 @@ public class ImplCarroServiceTest {
     }
 
     @Test
-    void atualizaCarroComPlacaDuplicadaDeveLancarExcecao() {
+    void testAtualizaCarroComPlacaDuplicadaDeveLancarExcecao() {
         long id = 5;
         Carro carroAtualizado = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", 250.5);
         carroAtualizado.setId(id);

@@ -35,7 +35,7 @@ public class CarroControllerTestDeErro {
 
 
     @Test
-    void salvaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
+    void testSalvaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
         Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
         String requestBody = asJsonString(carro);
 
@@ -55,7 +55,7 @@ public class CarroControllerTestDeErro {
     }
 
     @Test
-    void buscaCarroComIdInexistente_CodigoStatus_404() throws Exception {
+    void testBuscaCarroComIdInexistente_CodigoStatus_404() throws Exception {
         long id = 10;
         String mensagemErro = "Carro com Id: " + id + " Não Encontrado!";
         when(carroService.entidadePorId(id))
@@ -70,7 +70,7 @@ public class CarroControllerTestDeErro {
     }
 
     @Test
-    void atualizaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
+    void testAtualizaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
         long id = 1;
         Carro carroExistente = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
         Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.5);
@@ -93,7 +93,7 @@ public class CarroControllerTestDeErro {
     }
 
     @Test
-    void atualizaCarroComIdInexistente_CodigoStatus_404() throws Exception {
+    void testAtualizaCarroComIdInexistente_CodigoStatus_404() throws Exception {
         long id = 1;
         Carro novoCarro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
 
@@ -115,7 +115,7 @@ public class CarroControllerTestDeErro {
     }
 
     @Test
-    void deletaCarroComIdInexistente_CodigoStatus_404() throws Exception {
+    void testDeletaCarroComIdInexistente_CodigoStatus_404() throws Exception {
         long id = 1;
         Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
         String mensagemErro = "Carro com Id: " + id + " Não Encontrado!";

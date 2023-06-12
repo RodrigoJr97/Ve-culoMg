@@ -53,4 +53,12 @@ public class Cliente {
         this.email = email;
         this.dataNascimento = dataNascimento;
     }
+    public Cliente(String nome, String cpf, String numeroTelefone, String email, LocalDate dataNascimento, Endereco endereco) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.numeroTelefone = numeroTelefone;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.endereco = endereco;
+    }
 }

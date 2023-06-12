@@ -45,7 +45,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void salvaNovoCarroComSucesso_CodigoStatus_201() throws Exception {
+    void testSalvaNovoCarroComSucesso_CodigoStatus_201() throws Exception {
         Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.45);
         String requestBody = asJsonString(novoCarro);
 
@@ -69,7 +69,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void retornaListaDeCarrosComSucesso_CodigoStatus_200() throws Exception {
+    void testRetornaListaDeCarrosComSucesso_CodigoStatus_200() throws Exception {
         when(carroService.listaEntidades()).thenReturn(listaDeCarros);
 
         this.mockMvc.perform(get("/api/carros"))
@@ -84,7 +84,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void retornaListaVazia_CodigoStatus_200() throws Exception{
+    void testRetornaListaVazia_CodigoStatus_200() throws Exception{
         List<Carro> listaVazia = new ArrayList<>();
 
         when(carroService.listaEntidades()).thenReturn(listaVazia);
@@ -96,7 +96,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void retornaCarroPeloIdComSucesso_CodigoStatus_200() throws Exception {
+    void testRetornaCarroPeloIdComSucesso_CodigoStatus_200() throws Exception {
         Carro carro = listaDeCarros.get(0);
         long id = carro.getId();
 
@@ -118,7 +118,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void retornaListaDeCarrosDisponiveis_CodigoStatus_200() throws Exception {
+    void testRetornaListaDeCarrosDisponiveis_CodigoStatus_200() throws Exception {
         List<Carro> listaDeCarrosDisponiveis = listaDeCarros.stream()
                 .filter(Carro::isDisponivel)
                 .toList();
@@ -136,7 +136,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void retornaListaDeCarros_SelecionadosPela_CategoriaInformadaComSucesso_CodigoStatus_200() throws Exception{
+    void testRetornaListaDeCarros_SelecionadosPela_CategoriaInformadaComSucesso_CodigoStatus_200() throws Exception{
         String categoria = "Sedan";
         List<Carro> listaDeCarrosPelaCategoria = listaDeCarros.stream()
                 .filter(carro -> carro.getCategoria().equalsIgnoreCase(categoria))
@@ -153,7 +153,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void atualizaCarroPassandoONovoCarroEOIdComSucesso_CodigoStatus_200() throws Exception {
+    void testAtualizaCarroPassandoONovoCarroEOIdComSucesso_CodigoStatus_200() throws Exception {
         long id = 1;
         Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.5);
         novoCarro.setId(id);
@@ -180,7 +180,7 @@ public class CarroControllerTestDeSucesso {
     }
 
     @Test
-    void deletaOCarroPeloIdInformadoComSucesso_CodigoStatus_204() throws Exception {
+    void testDeletaOCarroPeloIdInformadoComSucesso_CodigoStatus_204() throws Exception {
         long id = 1L;
         Carro carro = listaDeCarros.get(0);
 

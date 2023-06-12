@@ -70,7 +70,7 @@ public class EnderecoController {
     @Operation(summary = "Deleta endereço pelo id.", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete do endereço realizado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Endereço com o dd informado não foi encontrado"),
+            @ApiResponse(responseCode = "404", description = "Endereço com o id informado não foi encontrado"),
             @ApiResponse(responseCode = "500", description = "Erro ao realizar o delete do endereço"),
     })
     @DeleteMapping("/{id}")
