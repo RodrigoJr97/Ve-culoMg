@@ -1,14 +1,12 @@
 package com.veiculosmg.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.MenorDeIdadeException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
-import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.entity.Cliente;
-import com.veiculosmg.service.implementacao.ImplClienteService;
+import com.veiculosmg.service.implementacaoService.ImplClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

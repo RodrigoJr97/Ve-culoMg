@@ -1,9 +1,9 @@
-package com.veiculosmg.service.implementacao;
+package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Endereco;
 import com.veiculosmg.model.repository.EnderecoRepository;
-import com.veiculosmg.service.EnderecoService;
+import com.veiculosmg.service.interfaceService.EnderecoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

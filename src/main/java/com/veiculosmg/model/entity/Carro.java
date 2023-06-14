@@ -1,14 +1,14 @@
 package com.veiculosmg.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.veiculosmg.exception.AtributoInvalidoException;
-import com.veiculosmg.utilitarios.FormataNome;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
-import java.util.Objects;
+import java.math.BigDecimal;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -48,11 +48,26 @@ public class Carro {
 
     @NotNull(message = "Valor Diária Obrigatória")
     @Positive(message = "O valor da diária deve ser maior que Zero")
-    private double valorDiaria;
+    private BigDecimal valorDiaria;
 
     private boolean disponivel = true;
 
-    public Carro(String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, double valorDiaria) {
+    @JsonIgnore
+    @OneToOne(mappedBy = "carro")
+    private Aluguel aluguel;
+
+    public Carro(String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, BigDecimal valorDiaria, boolean disponivel) {
+        this.marca = marca;
+        this.modelo = modelo;
+        this.placa = placa;
+        this.ano = ano;
+        this.categoria = categoria;
+        this.tipoCombustivel = tipoCombustivel;
+        this.valorDiaria = valorDiaria;
+        this.disponivel = disponivel;
+    }
+
+    public Carro(String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, BigDecimal valorDiaria) {
         this.marca = marca;
         this.modelo = modelo;
         this.placa = placa;
@@ -62,6 +77,16 @@ public class Carro {
         this.valorDiaria = valorDiaria;
     }
 
+    public Carro(Long id, String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, BigDecimal valorDiaria) {
+        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.placa = placa;
+        this.ano = ano;
+        this.categoria = categoria;
+        this.tipoCombustivel = tipoCombustivel;
+        this.valorDiaria = valorDiaria;
+    }
 
     public static void formataAtributos(Carro carro) {
        carro.setMarca(carro.getMarca().toUpperCase());

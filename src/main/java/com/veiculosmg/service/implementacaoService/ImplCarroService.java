@@ -1,10 +1,10 @@
-package com.veiculosmg.service.implementacao;
+package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.repository.CarroRepository;
-import com.veiculosmg.service.CarroService;
+import com.veiculosmg.service.interfaceService.CarroService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

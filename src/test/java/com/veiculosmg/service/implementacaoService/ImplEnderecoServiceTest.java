@@ -1,8 +1,8 @@
-package com.veiculosmg.service.implementacao;
+package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Endereco;
-import com.veiculosmg.service.EnderecoService;
+import com.veiculosmg.service.interfaceService.EnderecoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

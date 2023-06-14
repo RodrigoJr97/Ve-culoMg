@@ -2,7 +2,7 @@ package com.veiculosmg.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veiculosmg.model.entity.Carro;
-import com.veiculosmg.service.implementacao.ImplCarroService;
+import com.veiculosmg.service.implementacaoService.ImplCarroService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,16 +38,17 @@ public class CarroControllerTestDeSucesso {
 
     @BeforeEach
     public void setUp() {
-        Carro carro1 = new Carro(1L, "FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75, false);
-        Carro carro2 = new Carro(2L, "GM", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5, true);
-        Carro carro3 = new Carro(3L, "VW", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45, true);
+        Carro carro1 = new Carro(1L, "FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", new BigDecimal(450.75));
+        carro1.setDisponivel(false);
+        Carro carro2 = new Carro(2L, "GM", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", new BigDecimal(250.5));
+        Carro carro3 = new Carro(3L, "VW", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", new BigDecimal(350.45));
 
         listaDeCarros = Arrays.asList(carro1, carro2, carro3);
     }
 
     @Test
     void testSalvaNovoCarroComSucesso_CodigoStatus_201() throws Exception {
-        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.45);
+        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", new BigDecimal(350.45));
         String requestBody = asJsonString(novoCarro);
 
         when(carroService.salvaNovaEntidade(novoCarro)).thenReturn(novoCarro);
@@ -155,7 +157,7 @@ public class CarroControllerTestDeSucesso {
     @Test
     void testAtualizaCarroPassandoONovoCarroEOIdComSucesso_CodigoStatus_200() throws Exception {
         long id = 1;
-        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.5);
+        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", new BigDecimal(350.5));
         novoCarro.setId(id);
 
         String requestBody = asJsonString(novoCarro);

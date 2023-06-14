@@ -1,4 +1,4 @@
-package com.veiculosmg.service;
+package com.veiculosmg.service.interfaceService;
 
 import java.util.List;
 import java.util.Optional;

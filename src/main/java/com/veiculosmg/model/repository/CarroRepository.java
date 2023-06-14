@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarroRepository extends JpaRepository<Carro, Long> {
 
+    Carro findByPlaca(String placa);
+    boolean existsByPlaca(String placa);
+
 }

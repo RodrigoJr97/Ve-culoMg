@@ -1,9 +1,9 @@
-package com.veiculosmg.service.implementacao;
+package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
-import com.veiculosmg.service.CarroService;
+import com.veiculosmg.service.interfaceService.CarroService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +35,9 @@ public class ImplCarroServiceTest {
     @BeforeEach
     public void setUp() {
         listaCarros = new ArrayList<>();
-        listaCarros.add(new Carro("Bmw", "X5", "MGU-0002", 2022, "SUV", "Gasolina", 350.45));
-        listaCarros.add(new Carro("Gm", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", 250.5));
-        listaCarros.add(new Carro("Vw", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", 350.45));
+        listaCarros.add(new Carro("Bmw", "X5", "MGU-0002", 2022, "SUV", "Gasolina", new BigDecimal(350.45), true));
+        listaCarros.add(new Carro("Gm", "Vectra", "RGD0J07", 2003, "Sedan", "Gasolina", new BigDecimal(250.5), false));
+        listaCarros.add(new Carro("Vw", "Amarok V6", "MGU-0003", 2022, "Caminhonete", "Diesel", new BigDecimal(350.45), true));
     }
 
     @Test
@@ -123,7 +124,7 @@ public class ImplCarroServiceTest {
         Carro carroQueJaEstaSalvo = listaCarros.get(0);
         carroQueJaEstaSalvo.setId(id);
 
-        Carro carroAtualizado = new Carro("Vw", "Golf GTI", "MGU-0002", 2022, "Hatch", "Gasolina", 300.0);
+        Carro carroAtualizado = new Carro("Vw", "Golf GTI", "MGU-0002", 2022, "Hatch", "Gasolina", new BigDecimal(300.0));
         carroAtualizado.setId(id);
 
         doNothing().when(carroServiceMock).updateEntidade(carroAtualizado, id);
@@ -138,7 +139,7 @@ public class ImplCarroServiceTest {
 
     @Test
     void testSalvaCarroComPlacaDuplicadaDeveLancarExcecao() {
-        Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", 250.5);
+        Carro novoCarro = new Carro("Ford", "F250", "RGD0J07", 2005, "Caminhonete", "Diesel", new BigDecimal(250.5));
 
         doThrow(new AtributoDuplicadoException("Placa: " + novoCarro.getPlaca() + " já está cadastrada!"))
                 .when(carroServiceMock)
@@ -181,7 +182,7 @@ public class ImplCarroServiceTest {
     @Test
     void testAtualizaCarroComPlacaDuplicadaDeveLancarExcecao() {
         long id = 5;
-        Carro carroAtualizado = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", 250.5);
+        Carro carroAtualizado = new Carro("Ford", "F250", "MGU0097", 2005, "Caminhonete", "Diesel", new BigDecimal(250.5));
         carroAtualizado.setId(id);
 
         doThrow(new AtributoDuplicadoException("Placa informada já está cadastrada em outro veículo!"))

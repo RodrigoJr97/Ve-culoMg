@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.veiculosmg.model.entity.Cliente;
 import com.veiculosmg.model.entity.Endereco;
-import com.veiculosmg.service.implementacao.ImplClienteService;
+import com.veiculosmg.service.implementacaoService.ImplClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

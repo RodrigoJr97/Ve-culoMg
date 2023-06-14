@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
-import com.veiculosmg.service.implementacao.ImplCarroService;
+import com.veiculosmg.service.implementacaoService.ImplCarroService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doThrow;
@@ -36,7 +37,7 @@ public class CarroControllerTestDeErro {
 
     @Test
     void testSalvaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
-        Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
+        Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", new BigDecimal(450.75));
         String requestBody = asJsonString(carro);
 
         String mensagemErro = "Placa: " + carro.getPlaca() + " já está cadastrada!";
@@ -72,8 +73,8 @@ public class CarroControllerTestDeErro {
     @Test
     void testAtualizaCarroComPlacaDuplicada_CodigoStatus_409() throws Exception {
         long id = 1;
-        Carro carroExistente = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
-        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", 350.5);
+        Carro carroExistente = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", new BigDecimal(450.75));
+        Carro novoCarro = new Carro("BMW", "M4", "ABC-1234", 2022, "Sedan", "Gasolina", new BigDecimal(350.5));
 
         String requestBody = asJsonString(novoCarro);
         String mensagemErro = "Placa: " + novoCarro.getPlaca() + " já está cadastrada!";
@@ -95,7 +96,7 @@ public class CarroControllerTestDeErro {
     @Test
     void testAtualizaCarroComIdInexistente_CodigoStatus_404() throws Exception {
         long id = 1;
-        Carro novoCarro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
+        Carro novoCarro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", new BigDecimal(450.75));
 
         String requestBody = asJsonString(novoCarro);
         String mensagemErro = "Carro com Id: " + id + " Não Encontrado!";
@@ -117,7 +118,7 @@ public class CarroControllerTestDeErro {
     @Test
     void testDeletaCarroComIdInexistente_CodigoStatus_404() throws Exception {
         long id = 1;
-        Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", 450.75);
+        Carro carro = new Carro("FORD", "Mustang", "ABC-1234", 2021, "Esportivo", "Gasolina", new BigDecimal(450.75));
         String mensagemErro = "Carro com Id: " + id + " Não Encontrado!";
 
         when(carroService.entidadePorId(id)).thenReturn(Optional.of(carro));

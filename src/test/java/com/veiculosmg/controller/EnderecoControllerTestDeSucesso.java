@@ -2,7 +2,7 @@ package com.veiculosmg.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veiculosmg.model.entity.Endereco;
-import com.veiculosmg.service.implementacao.ImplEnderecoService;
+import com.veiculosmg.service.implementacaoService.ImplEnderecoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

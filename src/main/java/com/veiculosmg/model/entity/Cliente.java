@@ -1,5 +1,6 @@
 package com.veiculosmg.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.veiculosmg.utilitarios.anotacoes.ValidacaoNumeroTelefone;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -45,6 +46,10 @@ public class Cliente {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "cliente")
+    private Aluguel aluguel;
 
     public Cliente(String nome, String cpf, String numeroTelefone, String email, LocalDate dataNascimento) {
         this.nome = nome;

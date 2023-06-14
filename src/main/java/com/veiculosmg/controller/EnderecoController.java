@@ -1,7 +1,7 @@
 package com.veiculosmg.controller;
 
 import com.veiculosmg.model.entity.Endereco;
-import com.veiculosmg.service.EnderecoService;
+import com.veiculosmg.service.interfaceService.EnderecoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

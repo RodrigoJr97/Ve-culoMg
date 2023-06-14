@@ -1,7 +1,7 @@
 package com.veiculosmg.controller;
 
 import com.veiculosmg.model.entity.Carro;
-import com.veiculosmg.service.implementacao.ImplCarroService;
+import com.veiculosmg.service.implementacaoService.ImplCarroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

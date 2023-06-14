@@ -1,4 +1,4 @@
-package com.veiculosmg.service.implementacao;
+package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
 import com.veiculosmg.exception.MenorDeIdadeException;
@@ -6,7 +6,7 @@ import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Cliente;
 import com.veiculosmg.model.repository.ClienteRepository;
 import com.veiculosmg.model.repository.EnderecoRepository;
-import com.veiculosmg.service.ClienteService;
+import com.veiculosmg.service.interfaceService.ClienteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
