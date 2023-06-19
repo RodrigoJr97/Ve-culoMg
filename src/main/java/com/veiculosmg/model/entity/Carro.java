@@ -52,10 +52,6 @@ public class Carro {
 
     private boolean disponivel = true;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "carro")
-    private Aluguel aluguel;
-
     public Carro(String marca, String modelo, String placa, int ano, String categoria, String tipoCombustivel, BigDecimal valorDiaria, boolean disponivel) {
         this.marca = marca;
         this.modelo = modelo;

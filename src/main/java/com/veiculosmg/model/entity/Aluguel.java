@@ -1,9 +1,10 @@
 package com.veiculosmg.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.veiculosmg.model.enums.StatusAluguel;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,12 +19,10 @@ public class Aluguel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "carro_id", referencedColumnName = "id")
     private Carro carro;
 
-    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;

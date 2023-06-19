@@ -47,9 +47,7 @@ public class Cliente {
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     private Endereco endereco;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "cliente")
-    private Aluguel aluguel;
+    private boolean disponivel = true;
 
     public Cliente(String nome, String cpf, String numeroTelefone, String email, LocalDate dataNascimento) {
         this.nome = nome;

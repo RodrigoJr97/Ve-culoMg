@@ -11,6 +11,7 @@ public interface AluguelService {
     Aluguel criarAluguel(AluguelDTO aluguelDTO);
     List<AluguelResponseDTO> listarAlugueis();
     AluguelResponseDTO buscarAluguelPorId(Long id);
+    void atualizaAluguel(Long id);
     void excluirAluguel(Long id);
 
 }

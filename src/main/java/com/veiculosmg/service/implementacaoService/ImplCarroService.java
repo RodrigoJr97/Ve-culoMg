@@ -1,6 +1,7 @@
 package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
+import com.veiculosmg.exception.ElementoEmUmRelacionamentoException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Carro;
 import com.veiculosmg.model.repository.CarroRepository;
@@ -90,7 +91,9 @@ public class ImplCarroService implements CarroService {
     @Override
     public void deletaEntidade(Long id) {
         log.info("Delete do carro Id:{}", id + " iniciada.");
-        verificaSeCarroExiste(id);
+        Carro carro = verificaSeCarroExiste(id);
+
+        if (!carro.isDisponivel()) throw new ElementoEmUmRelacionamentoException("Carro está relacionado a um Aluguel.");
 
         log.info("Delete do carro concluído");
         carroRepository.deleteById(id);

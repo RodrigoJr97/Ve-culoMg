@@ -1,6 +1,7 @@
 package com.veiculosmg.service.implementacaoService;
 
 import com.veiculosmg.exception.AtributoDuplicadoException;
+import com.veiculosmg.exception.ElementoEmUmRelacionamentoException;
 import com.veiculosmg.exception.MenorDeIdadeException;
 import com.veiculosmg.exception.RecursoNaoEncontradoException;
 import com.veiculosmg.model.entity.Cliente;
@@ -82,9 +83,9 @@ public class ImplClienteService implements ClienteService {
     @Override
     public void deletaEntidade(Long id) {
         log.info("Delete do Cliente Id:{}", id + " iniciada.");
+        Cliente cliente = verificaSeClienteExiste(id);
 
-        log.info("Verificando se Cliente Id:{}", id + " existe.");
-        verificaSeClienteExiste(id);
+        if (!cliente.isDisponivel()) throw new ElementoEmUmRelacionamentoException("Cliente está relacionado a um Aluguel.");
 
         log.info("Delete do Cliente concluído");
         clienteRepository.deleteById(id);

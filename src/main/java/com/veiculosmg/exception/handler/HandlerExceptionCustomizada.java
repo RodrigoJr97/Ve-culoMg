@@ -12,6 +12,15 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestControllerAdvice
 public class HandlerExceptionCustomizada {
 
+    @ExceptionHandler(ElementoEmUmRelacionamentoException.class)
+    public ResponseEntity<ResponseException> handleElementoEmUmRelacionamento(ElementoEmUmRelacionamentoException ex) {
+        ResponseException responseException = new ResponseException(
+                HttpStatus.BAD_REQUEST.value(),
+                "Elemento informado está relacionado a outro elemento.",
+                ex.getMessage());
+
+        return new ResponseEntity<>(responseException, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(MenorDeIdadeException.class)
     public ResponseEntity<ResponseException> handleClienteMenorDeIdade(MenorDeIdadeException ex) {

@@ -37,6 +37,11 @@ public class AluguelController {
         return ResponseEntity.ok(aluguelService.buscarAluguelPorId(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateAluguelById(@PathVariable Long id) {
+        aluguelService.atualizaAluguel(id);
+        return ResponseEntity.ok().body("Aluguel Finalizado");
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAluguelById(@PathVariable Long id) {
